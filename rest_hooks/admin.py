@@ -19,7 +19,7 @@ class HookForm(forms.ModelForm):
 
     class Meta:
         model = HookModel
-        fields = ['user', 'target', 'event']
+        fields = ['user', 'target', 'event', 'app']
 
     def __init__(self, *args, **kwargs):
         super(HookForm, self).__init__(*args, **kwargs)
@@ -31,7 +31,7 @@ class HookForm(forms.ModelForm):
 
 
 class HookAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in HookModel._meta.fields]
+    list_display = ('app', 'target', 'event', 'created')
     raw_id_fields = ['user', ]
     form = HookForm
 

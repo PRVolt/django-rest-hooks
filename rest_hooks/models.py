@@ -11,6 +11,8 @@ from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.test.signals import setting_changed
 from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
+
 
 try:
     # Django <= 1.6 backwards compatibility
@@ -157,6 +159,12 @@ class AbstractHook(models.Model):
 
 
 class Hook(AbstractHook):
+    class AppChoices(models.TextChoices):
+        ZAPIER = 'zapier', _('Zapier')
+        PRVOLT = 'prvolt', _('PR-Volt')
+    app = models.CharField(choices=AppChoices.choices, max_length=15, default=AppChoices.PRVOLT)
+
+
     if django.VERSION >= (1, 7):
         class Meta(AbstractHook.Meta):
             swappable = 'HOOK_CUSTOM_MODEL'

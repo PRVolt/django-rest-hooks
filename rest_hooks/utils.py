@@ -112,6 +112,8 @@ def find_and_fire_hook(event_name, instance, user_override=None, payload_overrid
     HookModel = get_hook_model()
 
     hooks = HookModel.objects.filter(**filters)
+    if filter_hooks := getattr(instance, 'filter_hooks', None):
+        hooks = filter_hooks(hooks)
     for hook in hooks:
         hook.deliver_hook(instance, payload_override=payload_override)
 
